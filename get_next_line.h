@@ -17,4 +17,6 @@
 # define BUFFER_SIZE 42 
 # include <unistd.h>
 
+char	*ft_strdup(const char *src);
+
 #endif
