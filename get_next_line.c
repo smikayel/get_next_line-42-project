@@ -6,7 +6,7 @@
 /*   By: smikayel <smikayel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 19:03:10 by smikayel          #+#    #+#             */
-/*   Updated: 2022/04/02 19:38:42 by smikayel         ###   ########.fr       */
+/*   Updated: 2022/04/02 20:25:01 by smikayel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,22 @@ int	endl_index(char *stash)
 		i++;
 	}
 	return (0);
+}
+
+void get_line_from_stack(char **l, char **s)
+{
+	char *line;
+	char *stash;
+	char *ptr;
+
+	line = *l;
+	stash = *s;
+	line = ft_substr(stash, 0, endl_index(stash) + 1);
+	ptr = stash;
+	stash = ft_substr(stash, endl_index(stash) + 1, ft_strlen(stash));
+	free(ptr);
+	*l = line;
+	*s = stash;
 }
 
 char *get_next_line(int fd)
@@ -57,11 +73,8 @@ char *get_next_line(int fd)
 				return (NULL);
 			else if (is_endl(stash) == 1)
 			{
-					line = ft_substr(stash, 0, endl_index(stash) + 1);
-					ptr = stash;
-					stash = ft_substr(stash, endl_index(stash) + 1, ft_strlen(stash));
-					free(ptr);
-					return (line);
+				get_line_from_stack(&line, &stash);
+				return (line);
 			}
 			else
 			{
@@ -73,10 +86,7 @@ char *get_next_line(int fd)
 			}
 		}
 	}
-	line = ft_substr(stash, 0, endl_index(stash) + 1);
-	ptr = stash;
-	stash = ft_substr(stash, endl_index(stash) + 1, ft_strlen(stash));
-	free(ptr);
+	get_line_from_stack(&line, &stash);
 	return (line);
 }
 
